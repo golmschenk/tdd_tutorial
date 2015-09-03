@@ -16,9 +16,9 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.get('http://localhost:8000')
 
         # She sees that the website's title and header do indeed talk about to-dos, so she can guess she has the right link.
-        self.assertIn('To-Do', self.browser.title)
+        self.assertIn('To-do', self.browser.title)
         header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('To-Do', header_text)
+        self.assertIn('to-do', header_text)
 
         # Kara is immediately given the option to enter a to-do item
         input_box = self.browser.find_element_by_id('id_new_item')
