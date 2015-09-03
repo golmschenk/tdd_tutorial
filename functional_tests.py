@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import unittest
 
 class NewVisitorTest(unittest.TestCase):
@@ -16,16 +17,31 @@ class NewVisitorTest(unittest.TestCase):
 
         # She sees that the website's title and header do indeed talk about to-dos, so she can guess she has the right link.
         self.assertIn('To-Do', self.browser.title)
-        self.fail('Finish the test!')
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('To-Do', header_text)
 
         # Kara is immediately given the option to enter a to-do item
+        input_box = self.browser.find_element_by_id('id_new_item')
+        self.assertEqual(
+                input_box.get_attribute('placeholder'),
+                'Enter a to-do item'
+        )
 
         # She types in "Buy a telescope"
+        input_box.send_keys('Buy a telescope')
 
         # When she hits enter, the page updates, and now displays an item in a to-do list listing "1: Buy a telescope".
+        input_box.send_keys(Keys.ENTER)
+
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertTrue(
+                any(row.text == '1:Buy a telescope' for row in rows)
+        )
 
         # There is a box inviting her to add another item, so she types in "Use telescope to view stars" (Kara is very
         # methodical).
+        self.fail('Finish the test!')
 
         # The page updates again and now lists both items.
 
