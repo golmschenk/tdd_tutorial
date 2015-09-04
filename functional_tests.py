@@ -36,7 +36,8 @@ class NewVisitorTest(unittest.TestCase):
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
-                any(row.text == '1:Buy a telescope' for row in rows)
+                any(row.text == '1:Buy a telescope' for row in rows),
+                "The item did not appear in the table"
         )
 
         # There is a box inviting her to add another item, so she types in "Use telescope to view stars" (Kara is very
