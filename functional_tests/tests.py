@@ -35,9 +35,10 @@ class NewVisitorTest(LiveServerTestCase):
         # She types in "Buy a telescope"
         input_box.send_keys('Buy a telescope')
 
-        # When she hits enter, the page updates, and now displays an item in a to-do list listing "1: Buy a telescope".
+        # When she hits enter, shes taken to a new URL, which now displays an item in a to-do list listing "1: Buy a telescope".
         input_box.send_keys(Keys.ENTER)
-
+        karas_list_url = self.browser.current_url
+        self.assertRegex(karas_list_url, '/lists/.+')
         self.check_for_row_in_list_table('1: Buy a telescope')
 
         # There is a box inviting her to add another item, so she types in "Use telescope to view stars" (Kara is very
@@ -54,11 +55,32 @@ class NewVisitorTest(LiveServerTestCase):
         self.check_for_row_in_list_table('1: Buy a telescope')
         self.check_for_row_in_list_table('2: Use telescope to view stars')
 
-        # Kara is wonders if the site will remember her list, and then sees that the site has generated a unique URL for her.
-        # At least, there's some explanatory text to that effect.
-        self.fail('Finish the test!')
+        # Now a new user, Sophia, takes a look at the website.
 
-        # She visits the url and her list is still there.
+        ## We use a new browser to make sure no cookies are kept from Kara's browser.
+        self.browser.quit()
+        self.browser = webdriver.Firefox()
 
-        # For the moment, Kara's skeptism about the site is quelled, and she goes back to sleep.
+        # Sophia visits the homepage, and does not see Kara's list.
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('Buy a telescope', page_text)
+        self.assertNotIn('Use telescope to view stars', page_text)
+
+        # Sophia starts a new list by entering a new item, which by chance is also science based.
+        input_box = self.browser.find_element_by_id('id_new_item')
+        input_box.send_keys('Buy a Bunsen burner')
+        input_box.send_keys(Keys.ENTER)
+
+        # Sophia gets her own unique URL.
+        sophias_list_url = self.browser.current_url
+        self.assertRegex(sophias_list_url, '/lists/.+')
+        self.assertNotEqual(karas_list_url, sophias_list_url)
+
+        # Sophia sees only her list.
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertIn('Bunsen burner', page_text)
+        self.assertNotIn('Buy a telescope', page_text)
+
+        # For the moment, both Kara and Sophia's skeptism about the site is quelled, and both go back to sleep.
 
