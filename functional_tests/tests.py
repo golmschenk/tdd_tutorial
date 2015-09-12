@@ -1,8 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -98,7 +98,8 @@ class NewVisitorTest(LiveServerTestCase):
         )
 
         # She starts a new list and sees that the box is centered on that page as well.
-        input_box.sendkeys('Just checking\n')
+        input_box.send_keys('Just checking\n')
+        input_box = self.browser.find_element_by_id('id_new_item')
         self.assertAlmostEqual(
             input_box.location['x'] + input_box.size['width'] / 2,
             512,
