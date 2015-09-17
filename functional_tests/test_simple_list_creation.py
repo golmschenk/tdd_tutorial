@@ -15,7 +15,7 @@ class NewVisitorTest(FunctionalTest):
         self.assertIn('to-do', header_text)
 
         # Kara is immediately given the option to enter a to-do item
-        input_box = self.browser.find_element_by_id('id_new_item')
+        input_box = self.get_item_input_box()
         self.assertEqual(
                 input_box.get_attribute('placeholder'),
                 'Enter a to-do item'
@@ -32,7 +32,7 @@ class NewVisitorTest(FunctionalTest):
 
         # There is a box inviting her to add another item, so she types in "Use telescope to view stars" (Kara is very
         # methodical).
-        input_box = self.browser.find_element_by_id('id_new_item')
+        input_box = self.get_item_input_box()
         self.assertEqual(
                 input_box.get_attribute('placeholder'),
                 'Enter a to-do item'
@@ -57,7 +57,7 @@ class NewVisitorTest(FunctionalTest):
         self.assertNotIn('Use telescope to view stars', page_text)
 
         # Sophia starts a new list by entering a new item, which by chance is also science based.
-        input_box = self.browser.find_element_by_id('id_new_item')
+        input_box = self.get_item_input_box()
         input_box.send_keys('Buy a Bunsen burner')
         input_box.send_keys(Keys.ENTER)
 
