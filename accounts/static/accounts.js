@@ -3,7 +3,10 @@ var initialize = function (navigator, user, token, urls) {
         navigator.id.request();
     });
     navigator.id.watch({
-        loggedInUser: user
+        loggedInUser: user,
+        onlogin: function (assertion) {
+            $.post(urls.login, $.param({assertion: assertion, csrfmiddlewaretoken: token}))
+        }
     });
 };
 
