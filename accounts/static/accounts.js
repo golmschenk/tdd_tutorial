@@ -5,8 +5,11 @@ var initialize = function (navigator, user, token, urls) {
     navigator.id.watch({
         loggedInUser: user,
         onlogin: function (assertion) {
-            $.post(urls.login, $.param({assertion: assertion, csrfmiddlewaretoken: token}))
-        }
+            var deferred = $.post(urls.login, $.param({assertion: assertion, csrfmiddlewaretoken: token}));
+            deferred.done(function () { window.location.reload(); });
+            deferred.fail(function () { navigator.id.logout(); });
+        },
+        onlogout: function () {}
     });
 };
 
