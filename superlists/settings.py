@@ -124,6 +124,13 @@ LOGGING = {
     'root': {'level': 'INFO'},
 }
 
+# Authentication
+
+AUTH_USER_MODEL = 'accounts.User'
+AUTHENTICATION_BACKENDS = (
+    'accounts.authentication.PersonaAuthenticationBackend',
+)
+
 # Third Party
 
 TEST_RUNNER = 'rainbowtests.test.runner.RainbowDiscoverRunner'
