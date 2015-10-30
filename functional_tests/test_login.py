@@ -1,7 +1,9 @@
 import time
-from selenium.webdriver.support.ui import WebDriverWait
 
 from .base import FunctionalTest
+
+
+TEST_EMAIL = 'kara@mockmyid.com'
 
 
 class LoginTest(FunctionalTest):
@@ -17,9 +19,6 @@ class LoginTest(FunctionalTest):
                 time.sleep(0.5)
             self.fail('could not find window')
 
-    def wait_for_element_with_id(self, element_id):
-        WebDriverWait(self.browser, timeout=30).until(lambda b: b.find_element_by_id(element_id))
-
     def test_login_with_persona(self):
         # Kara goes to the awesome superlists site
         # and notices a "Sign in" link for the first time.
@@ -29,7 +28,7 @@ class LoginTest(FunctionalTest):
         # A Persona login box appears
         self.switch_to_new_window('Mozilla Persona')
 
-        # Edith logs in with her email address
+        # Kara logs in with her email address
         ## Use mockmyid.com for test email
         self.browser.find_element_by_id('authentication_email').send_keys('kara@mockmyid.com')
         self.browser.find_element_by_tag_name('button').click()
@@ -38,7 +37,18 @@ class LoginTest(FunctionalTest):
         self.switch_to_new_window('To-do')
 
         # She can see that she is logged in
-        self.wait_for_element_with_id('id_logout')
-        navbar = self.browser.find_element_by_css_selector('.navbar')
-        self.assertIn('kara@mockmyid.com', navbar.text)
+        self.wait_to_be_logged_in(email=TEST_EMAIL)
+                    
+        # Refreshing the page, she sees it's a real session login, not just a one-off for that page
+        self.browser.refresh()
+        self.wait_to_be_logged_in(email=TEST_EMAIL)
+         
+        # To insure no one can use her account, she tests the "logout"
+        self.browser.find_element_by_id('id_logout').click()
+        self.wait_to_be_logged_out(email=TEST_EMAIL)
+                    
+        # The "logged out" status also persists after a refresh
+        self.browser.refresh()
+        self.wait_to_be_logged_out(email=TEST_EMAIL)
+
 
