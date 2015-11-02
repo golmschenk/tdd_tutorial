@@ -25,7 +25,9 @@ SECRET_KEY = 'k7ur^st(c11q(*$wgtmz#17t*nluo*%hgen$hsid)t0p-(1ibt'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# This setting is changed by the deploy script
+DOMAIN = "localhost"
+ALLOWED_HOSTS = [DOMAIN]
 
 
 # Application definition
@@ -130,6 +132,7 @@ AUTH_USER_MODEL = 'accounts.User'
 AUTHENTICATION_BACKENDS = (
     'accounts.authentication.PersonaAuthenticationBackend',
 )
+
 
 # Third Party
 
