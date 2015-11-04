@@ -11,7 +11,8 @@ def create_session_on_server(host, email):
             '--host={}'.format(host),
             '--hide=everything,status',
         ],
-        cwd=THIS_FOLDER).decode().strip()
+        cwd=THIS_FOLDER
+    ).decode().strip()
 
 def reset_database(host):
     subprocess.check_call(
