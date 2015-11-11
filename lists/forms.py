@@ -6,6 +6,11 @@ from lists.models import Item
 EMPTY_ITEM_ERROR = "You can't have an empty list item"
 DUPLICATE_ITEM_ERROR = "You already have this item in this list"
 
+
+class NewListForm:
+    pass
+
+
 class ItemForm(forms.models.ModelForm):
 
     class Meta:
