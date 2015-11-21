@@ -43,7 +43,8 @@ class FunctionalTest(StaticLiveServerTestCase):
             if not os.path.exists(SCREEN_DUMP_LOCATION):
                 os.makedirs(SCREEN_DUMP_LOCATION)
             for ix, handle in enumerate(self.browser.window_handles):
-                self._windowid = ix self.browser.switch_to_window(handle)
+                self._windowid = ix
+                self.browser.switch_to_window(handle)
                 self.take_screenshot()
                 self.dump_html()
         self.browser.quit()
